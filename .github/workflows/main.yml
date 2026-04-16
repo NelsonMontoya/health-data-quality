@@ -19,3 +19,6 @@ jobs:
       - name: Run Automated Quality Audit
         run: |
           python -m pytest tests/test_slas.py --html=report_ci.html --self-contained-html
+
+
+        
