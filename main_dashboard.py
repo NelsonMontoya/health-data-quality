@@ -3,7 +3,6 @@ import pandas as pd
 import plotly.express as px
 from app.client import WorldBankClient
 from app.models import HealthData
-import requests
 
 # 1. Professional Page Configuration
 st.set_page_config(
@@ -27,7 +26,6 @@ def load_countries():
     """Fetches and filters the list of available countries from the API."""
     try:
         raw_countries = client.get_countries_list()
-        # Exclude regional aggregates to focus on individual nations
         return [c for c in raw_countries if c['region']['value'] != 'Aggregates']
     except Exception as e:
         st.error(f"API Connection Error during discovery: {e}")
@@ -47,45 +45,54 @@ selected_iso = country_options.get(selected_name) if selected_name else None
 # 3. Audit, Classification, and Visualization Phase
 if st.button("Execute Quality Audit") and selected_iso:
     with st.spinner(f"Analyzing data integrity for {selected_name}..."):
-        # Fetching data with built-in error handling for Timeouts
         raw_records = client.fetch_health_indicator(selected_iso)
         
         if not raw_records:
-            st.error("🔌 **Network Timeout or No Data**: The World Bank server is currently unreachable or too slow. Please try clicking the button again.")
+            st.error("🔌 **Network Timeout or No Data**: The World Bank server is unreachable. Please try again.")
         else:
-            valid_records = []  # Records that passed Pydantic schema
-            anomalies = []       # Quarantine: Technical or logical failures
-            null_records = []    # Valid schema but missing values (completeness failure)
+            valid_records = []  
+            anomalies = []       
+            null_records = []    
             
             for r in raw_records:
                 try:
-                    # Pydantic model acts as the primary Data Firewall
+                    # Pydantic model validation
                     audit_point = HealthData(date=r['date'], value=r['value'])
                     valid_records.append(audit_point.model_dump())
                     
                     if r['value'] is None:
                         null_records.append({"Year": r['date'], "Status": "Missing (Null)"})
                 except Exception as e:
-                    # Failed records are sent to Quarantine
                     anomalies.append({
                         "Year": r.get('date'), 
                         "Technical_Error": str(e),
                         "Original_Value": r.get('value')
                     })
             
-            # --- KPI LOGIC ---
+            # --- STRICT 80% THRESHOLD LOGIC ---
             total = len(raw_records)
-            # A record is "Healthy" only if it is valid AND contains a numeric value
             well_populated = [r for r in valid_records if r['value'] is not None]
             health_score = (len(well_populated) / total) * 100 if total > 0 else 0
             
+            # Traffic Light Logic
+            if health_score >= 80:
+                status_msg = "✅ PASS: High Quality Data"
+                status_color = "normal"
+            else:
+                status_msg = "❌ FAIL: Below 80% Threshold"
+                status_color = "inverse" # Turns Red
+
             # Key Performance Indicators
             c1, c2, c3 = st.columns(3)
-            c1.metric("Data Health Score", f"{health_score:.1f}%", help="Percentage of usable and valid records.")
+            c1.metric("Data Health Score", f"{health_score:.1f}%", delta=status_msg, delta_color=status_color)
             c2.metric("Total Records Analyzed", total)
             c3.metric("Rule Anomalies", len(anomalies), delta="In Quarantine", delta_color="inverse")
             
-            # Trend Visualization (Validated Data Only)
+            if health_score < 80:
+                st.error(f"### ⚠️ Quality Gate Alert: {health_score:.1f}%")
+                st.write("This dataset does not meet the **80% corporate integrity threshold**. Visualizations may be misleading.")
+
+            # Trend Visualization
             if well_populated:
                 df_plot = pd.DataFrame(well_populated)
                 st.subheader(f"Validated Trend Analysis: {selected_name}")
@@ -103,7 +110,6 @@ if st.button("Execute Quality Audit") and selected_iso:
             st.subheader("📋 Technical Audit Report")
             
             col_a, col_b = st.columns(2)
-            
             with col_a:
                 with st.expander("✅ View Validated Dataset"):
                     if valid_records:
@@ -121,7 +127,7 @@ if st.button("Execute Quality Audit") and selected_iso:
 
             with st.expander("ℹ️ Completeness Analysis (Missing Data)"):
                 if null_records:
-                    st.info(f"Identified {len(null_records)} years with null values in the source.")
+                    st.info(f"Identified {len(null_records)} years with null values.")
                     st.dataframe(pd.DataFrame(null_records), width='stretch')
                 else:
-                    st.success("Complete historical series (No null values).")
+                    st.success("Complete historical series.")

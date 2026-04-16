@@ -1,24 +1,38 @@
-name: Data Quality Pipeline
+name: Data Quality & SLA Pipeline
 
 on:
   push:
-    branches: [ main ] # Se activa al subir código
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
-  audit:
+  quality-audit:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
-      - name: Set up Python
+      - name: 1. Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: 2. Setup Python 3.11
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Install dependencies
+
+      - name: 3. Install Production Dependencies
         run: |
+          python -m pip install --upgrade pip
           pip install -r requirements.txt
-      - name: Run Automated Quality Audit
+
+      - name: 4. Execute Automated Quality Audit (80% Threshold)
         run: |
+          # We run the tests using the virtual environment's logic
+          # Note: This will intentionally fail on Brazil to prove the gate works
           python -m pytest tests/test_slas.py --html=report_ci.html --self-contained-html
 
-
-        
+      - name: 5. Archive Quality Report
+        if: always() # We want the report even if the 80% threshold fails
+        uses: actions/upload-artifact@v4
+        with:
+          name: health-data-quality-report
+          path: report_ci.html
