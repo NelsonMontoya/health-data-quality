@@ -19,6 +19,7 @@ numpy==2.4.4
 packaging==26.1
 pandas==3.0.2
 pillow==12.2.0
+plotly==6.7.0
 pluggy==1.6.0
 protobuf==7.34.1
 pyarrow==23.0.1
@@ -27,6 +28,8 @@ pydantic_core==2.46.1
 pydeck==0.9.1
 Pygments==2.20.0
 pytest==9.0.3
+pytest-html==4.2.0
+pytest-metadata==3.1.1
 python-dateutil==2.9.0.post0
 referencing==0.37.0
 requests==2.33.1
@@ -40,3 +43,4 @@ tornado==6.5.5
 typing-inspection==0.4.2
 typing_extensions==4.15.0
 urllib3==2.6.3
+watchdog==6.0.0

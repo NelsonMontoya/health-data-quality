@@ -1,8 +1,6 @@
-#!/Users/nelsonbenitez/Documents/health-data-quality/venv/bin/python3.11
-# -*- coding: utf-8 -*-
-import re
+#!/Users/nelsonbenitez/Documents/GitHub/health-data-quality/venv/bin/python3.11
 import sys
 from jsonschema.cli import main
 if __name__ == '__main__':
-    sys.argv[0] = re.sub(r'(-script\.pyw|\.exe)?$', '', sys.argv[0])
+    sys.argv[0] = sys.argv[0].removesuffix('.exe')
     sys.exit(main())

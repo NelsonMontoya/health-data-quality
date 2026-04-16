@@ -1,4 +1,4 @@
-#!/Users/nelsonbenitez/Documents/health-data-quality/venv/bin/python3.11
+#!/Users/nelsonbenitez/Documents/GitHub/health-data-quality/venv/bin/python3.11
 # -*- coding: utf-8 -*-
 import re
 import sys
