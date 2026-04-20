@@ -8,7 +8,7 @@ charset-normalizer==3.4.7
 choreographer==1.2.1
 click==8.3.2
 defusedxml==0.7.1
-duckdb==1.5.2
+duckdb>=0.10.0
 fonttools==4.62.1
 fpdf2==2.8.7
 gitdb==4.0.12
@@ -47,7 +47,7 @@ requests==2.33.1
 rpds-py==0.30.0
 scikit-learn==1.8.0
 scipy==1.17.1
-simplejson==4.0.0
+simplejson
 six==1.17.0
 smmap==5.0.3
 statsmodels==0.14.6
