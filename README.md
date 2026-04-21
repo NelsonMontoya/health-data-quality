@@ -27,8 +27,10 @@ git clone <your-repo-url>
 cd health-data-quality
 
 # Create and activate a virtual environment
+```bash
 python3 -m venv venv
-source venv/bin/activate
+git clone <your-repo-url>
+cd health-data-quality
 
 # Install primary dependencies
 pip install -r requirements.txt
