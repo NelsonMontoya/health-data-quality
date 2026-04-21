@@ -21,8 +21,8 @@ The "Grand Finale" of the analytical engine is its ability to project the future
     $$y = \beta_0 + \beta_1 x + \beta_2 x^2 + \dots + \beta_n x^n + \epsilon$$
 
 ---
-```bash
 # Clone the repository
+```bash
 git clone <your-repo-url>
 cd health-data-quality
 
@@ -35,14 +35,18 @@ cd health-data-quality
 ```
 
 # Install primary dependencies
+```bash
 pip install -r requirements.txt
+```
 
 # Essential for capturing visual trend analysis into PDF
+```bash
 pip install kaleido==0.2.1
+```
 
 # Launch Platform
+```bash
 streamlit run main_dashboard.py
-
 ```
 
 ## 📋 Project Structure
