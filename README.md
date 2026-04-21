@@ -21,17 +21,32 @@ The "Grand Finale" of the analytical engine is its ability to project the future
     $$y = \beta_0 + \beta_1 x + \beta_2 x^2 + \dots + \beta_n x^n + \epsilon$$
 
 ---
-# Clone the repository
-```bash
-git clone <your-repo-url>
-cd health-data-quality
 
+## 📋 Project Structure
+The repository is organized following professional modularity standards to ensure scalability:
+
+```text
+health-data-quality/
+├── app/
+│   ├── client.py        # Resilient API Client for World Bank data.
+│   ├── models.py        # Pydantic validation models (The Quality Firewall).
+│   ├── database.py      # Persistence layer using DuckDB (OLAP).
+│   └── reports.py       # Executive PDF generation engine (FPDF2).
+├── main_dashboard.py    # Main UI Orchestrator (Streamlit).
+├── requirements.txt     # System dependencies.
+└── README.md            # Project documentation.
 ```
 
+# Setup and Execution 
+```bash
+# Clone the repository
+git clone https://github.com/NelsonMontoya/health-data-quality.git
+cd health-data-quality
+```
 # Create and activate a virtual environment
 ```bash
-git clone <your-repo-url>
-cd health-data-quality
+python3 -m venv venv
+source venv/bin/activate
 ```
 
 # Install primary dependencies
@@ -48,18 +63,3 @@ pip install kaleido==0.2.1
 ```bash
 streamlit run main_dashboard.py
 ```
-
-## 📋 Project Structure
-The repository is organized following professional modularity standards to ensure scalability:
-
-```text
-health-data-quality/
-├── app/
-│   ├── client.py        # Resilient API Client for World Bank data.
-│   ├── models.py        # Pydantic validation models (The Quality Firewall).
-│   ├── database.py      # Persistence layer using DuckDB (OLAP).
-│   └── reports.py       # Executive PDF generation engine (FPDF2).
-├── main_dashboard.py    # Main UI Orchestrator (Streamlit).
-├── requirements.txt     # System dependencies.
-└── README.md            # Project documentation.
-
