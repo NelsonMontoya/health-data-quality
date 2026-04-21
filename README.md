@@ -21,17 +21,18 @@ The "Grand Finale" of the analytical engine is its ability to project the future
     $$y = \beta_0 + \beta_1 x + \beta_2 x^2 + \dots + \beta_n x^n + \epsilon$$
 
 ---
-# Clone the repository
 ```bash
-
+# Clone the repository
 git clone <your-repo-url>
 cd health-data-quality
-```bash
+
+```
 
 # Create and activate a virtual environment
-
+```bash
 git clone <your-repo-url>
 cd health-data-quality
+```
 
 # Install primary dependencies
 pip install -r requirements.txt
