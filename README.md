@@ -21,14 +21,13 @@ The "Grand Finale" of the analytical engine is its ability to project the future
     $$y = \beta_0 + \beta_1 x + \beta_2 x^2 + \dots + \beta_n x^n + \epsilon$$
 
 ---
-
+```bash
 # Clone the repository
 git clone <your-repo-url>
 cd health-data-quality
 
 # Create and activate a virtual environment
-```bash
-python3 -m venv venv
+
 git clone <your-repo-url>
 cd health-data-quality
 
@@ -40,6 +39,8 @@ pip install kaleido==0.2.1
 
 # Launch Platform
 streamlit run main_dashboard.py
+
+```
 
 ## 📋 Project Structure
 The repository is organized following professional modularity standards to ensure scalability:
